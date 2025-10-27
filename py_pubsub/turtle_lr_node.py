@@ -5,12 +5,15 @@ from turtlesim.msg import Pose
 
 from enum import Enum
 
-RANGE = 4
 TURTLESIM_ARENA_WIDTH = 11.1
 
 class TurtleLeftRightNode(Node):
     def __init__(self):
         super().__init__('turtle_circle_publisher')
+        self.declare_parameter('range', 4.0)
+        self.range = self.get_parameter('range').value
+        print('TurtleLeftRightNode starting up. range: {}'.format(self.range))
+
         self.pub = self.create_publisher(Twist, 'cmd_vel', 10)
         self.subscription = self.create_subscription(
             Pose,
@@ -25,9 +28,9 @@ class TurtleLeftRightNode(Node):
         self.direction = 1 # forward
 
     def pose_callback(self, pose):
-        if pose.x > TURTLESIM_ARENA_WIDTH/2 + RANGE:
+        if pose.x >= TURTLESIM_ARENA_WIDTH/2 + self.range:
             self.direction = -1
-        elif pose.x < TURTLESIM_ARENA_WIDTH/2 - RANGE:
+        elif pose.x < TURTLESIM_ARENA_WIDTH/2 - self.range:
             self.direction = 1
         self.twist.linear.x = self.v * self.direction
         self.pub.publish(self.twist)
