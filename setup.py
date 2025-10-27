@@ -27,6 +27,7 @@ setup(
             'talker=py_pubsub.publisher_member_function:main',
             'listener=py_pubsub.subscriber_member_function:main',
             'turtle_publisher=py_pubsub.turtle_publisher:main',
+            'turtle_lr_node=py_pubsub.turtle_lr_node:main',
         ],
     },
 )
